@@ -1,0 +1,61 @@
+// Librerías necesarias
+#include <DHT.h>
+
+// Definición de pines
+#define DHTPIN 2
+#define DHTTYPE DHT11
+
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() {
+  Serial.begin(9600);
+  dht.begin();
+}
+
+void loop() {
+  float temperatura = obtenerTemperatura();
+  float humedad = obtenerHumedad();
+
+  controlarTemperatura(temperatura);
+  controlarHumedad(humedad);
+
+  delay(1000);
+}
+
+// Función para obtener la temperatura
+float obtenerTemperatura() {
+  float temperatura = dht.readTemperature();
+  Serial.print("Temperatura: ");
+  Serial.println(temperatura);
+  return temperatura;
+}
+
+// Función para obtener la humedad
+float obtenerHumedad() {
+  float humedad = dht.readHumidity();
+  Serial.print("Humedad: ");
+  Serial.println(humedad);
+  return humedad;
+}
+
+// Función para controlar la temperatura
+void controlarTemperatura(float temperatura) {
+  if (temperatura > 25) {
+    // Encender el ventilador o aire acondicionado
+    Serial.println("Temperatura alta. Encender ventilador.");
+  } else {
+    // Apagar el ventilador o aire acondicionado
+    Serial.println("Temperatura normal. Apagar ventilador.");
+  }
+}
+
+// Función para controlar la humedad
+void controlarHumedad(float humedad) {
+  if (humedad > 70) {
+    // Encender el deshumidificador
+    Serial.println("Humedad alta. Encender deshumidificador.");
+  } else {
+    // Apagar el deshumidificador
+    Serial.println("Humedad normal. Apagar deshumidificador.");
+  }
+}
